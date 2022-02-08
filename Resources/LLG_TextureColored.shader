@@ -15,6 +15,7 @@ Shader "LLG/TextureColored" {
 		_ZTest("ZTest", Int) = 4.0 // LEqual
 		_Cull("Cull", Int) = 0.0 // Off
 		_ZBias("ZBias", Float) = 0.0
+		_ColorMask("ColorMask", Int) = 0.0 // Off
 	}
 
 		SubShader{
@@ -23,8 +24,9 @@ Shader "LLG/TextureColored" {
 				Blend[_SrcBlend][_DstBlend]
 				ZWrite[_ZWrite]
 				ZTest[_ZTest]
-				Cull[_Cull]
 				Offset[_ZBias],[_ZBias]
+				Cull[_Cull]
+				ColorMask[_ColorMask]
 
 				CGPROGRAM
 				#pragma vertex vert
@@ -59,8 +61,8 @@ Shader "LLG/TextureColored" {
 					return o;
 				}
 				fixed4 frag(v2f i) : SV_Target{
-					float4 cmain = tex2d(_MainTex, i.uv);
-					return i.color * cmain;
+					float4 cmain = tex2D(_MainTex, i.uv);
+					return cmain * i.color;
 				}
 				ENDCG
 			}
