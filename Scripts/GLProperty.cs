@@ -25,6 +25,8 @@ namespace LLGraphicsUnity {
 			ALL = RGB | A
 		}
 
+		public enum KW_VERTEX_COLOR { ___ = 0, NO_VERTEX_COLOR }
+
 		public static readonly int P_COLOR = Shader.PropertyToID("_Color");
 		public static readonly int P_MainTex = Shader.PropertyToID("_MainTex");
 
@@ -49,6 +51,8 @@ namespace LLGraphicsUnity {
 
 		public CullEnum Cull = CullEnum.None;
 		public ColorMaskEnum ColorMask = ColorMaskEnum.ALL;
+
+		public KW_VERTEX_COLOR VertexColor = default;
 
 		public GLProperty() { }
 		public GLProperty(GLProperty src) {
@@ -79,6 +83,9 @@ namespace LLGraphicsUnity {
 
 			dst.Cull = (CullEnum)src.GetInt(P_CULL);
 			dst.ColorMask = (ColorMaskEnum)src.GetInt(P_ColorMask);
+
+			dst.VertexColor = src.IsKeywordEnabled(KW_VERTEX_COLOR.NO_VERTEX_COLOR.ToString()) ? 
+				KW_VERTEX_COLOR.NO_VERTEX_COLOR : default;
 		}
 		public static void Copy(GLProperty src, GLProperty dst) {
 			dst.Color = src.Color;
@@ -93,6 +100,8 @@ namespace LLGraphicsUnity {
 
 			dst.Cull = src.Cull;
 			dst.ColorMask = src.ColorMask;
+
+			dst.VertexColor = src.VertexColor;
 		}
 		public static void Copy(GLProperty src, Material dst) {
 			dst.color = src.Color;
@@ -107,6 +116,9 @@ namespace LLGraphicsUnity {
 
 			dst.SetInt(P_CULL, (int)src.Cull);
 			dst.SetInt(P_ColorMask, (int)src.ColorMask);
+
+			dst.shaderKeywords = null;
+			if (src.VertexColor != default) dst.EnableKeyword(src.VertexColor.ToString());
 		}
 		#endregion
 	}

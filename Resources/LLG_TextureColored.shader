@@ -32,7 +32,7 @@ Shader "LLG/TextureColored" {
 				#pragma vertex vert
 				#pragma fragment frag
 				#pragma target 2.0
-				#pragma multi_compile _ UNITY_SINGLE_PASS_STEREO STEREO_INSTANCING_ON STEREO_MULTIVIEW_ON
+				#pragma multi_compile ___ NO_VERTEX_COLOR
 				#include "UnityCG.cginc"
 
 				struct appdata_t {
@@ -50,13 +50,23 @@ Shader "LLG/TextureColored" {
 
 				float4 _Color;
 				sampler2D _MainTex;
+				float4 _MainTex_TexelSize;
 
 				v2f vert(appdata_t v) {
+					float4 c = _Color;
+
+					#ifndef NO_VERTEX_COLOR
+					c *= v.color;
+					#endif
+
+					float2 uv = v.uv;
+					if (_MainTex_TexelSize.y < 0) uv.y = 1 - uv.y;
+
 					v2f o;
 					UNITY_SETUP_INSTANCE_ID(v);
 					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 					o.vertex = UnityObjectToClipPos(v.vertex);
-					o.color = v.color * _Color;
+					o.color = c;
 					o.uv = v.uv;
 					return o;
 				}
