@@ -52,6 +52,10 @@ namespace LLGraphicsUnity {
 				using (new GLModelViewScope(Matrix4x4.TRS(new Vector3(scale.x * 1.5f, scale.y * .5f, -1), rot, .8f * scale))) {
 					GLTool.QuadOutlineVertices().DrawLineStrip();
 				}
+				using (mat.GetScope(new GLProperty(data) { Color = Color.cyan }))
+				using (new GLModelViewScope(Matrix4x4.TRS(new Vector3(scale.x * 1.5f, scale.y * 1.5f, -1), rot, .8f * scale))) {
+					GLTool.CircleOutlineVertices(0.5f, 50).DrawLineStrip();
+				}
 			}
 		}
 		#endregion

@@ -45,6 +45,12 @@ namespace LLGraphicsUnity {
 			yield return new Vector3(-v, -v, 0);
 		}
 
+		public static IEnumerable<Vector3> CircleOutlineVertices(float radius, int steps) {
+			var rad = 2f * Mathf.PI / steps;
+			for (var i = 0; i <= steps; i++)
+				yield return new Vector3(radius * Mathf.Cos(i * rad), radius * Mathf.Sin(i * rad), 0f);
+		}
+
 		public static Matrix4x4 SquareOrtho(float aspect, float height = 1f)
 			=> Matrix4x4.Ortho(0f, aspect * height, 0f, height, 1f, -100f);
 
