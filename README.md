@@ -1,5 +1,8 @@
 # Object-oriented GL tool for Unity
 
+## Dependencies
+- [Gist2](https://github.com/nobnak/Gist2)
+
 ## Usage
 ```csharp
 public Texture tex;
