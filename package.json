@@ -1,5 +1,12 @@
 {
 	"name": "com.nobnak.llgraphics",
 	"displayName": "Low-level Graphicse",
-	"version": "1.0.0"
+	"version": "1.0.0",
+	"samples": [
+		{
+			"displayName": "GLSample01",
+			"description": "GL Sample",
+			"path": "Samples/GLSample01"
+		}
+	]
 }
