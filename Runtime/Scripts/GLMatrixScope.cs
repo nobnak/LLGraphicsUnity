@@ -23,7 +23,8 @@ namespace LLGraphicsUnity {
 			this.modelview = GL.modelview;
 		}
 		public GLModelViewScope(Matrix4x4 mult) : this() {
-			GL.MultMatrix(mult);
+			//GL.MultMatrix(mult);
+			GL.modelview *= mult;
 		}
 
 		public void Dispose() {
