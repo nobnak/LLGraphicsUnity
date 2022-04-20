@@ -1,9 +1,8 @@
 # Object-oriented GL tool for Unity
 
-## Dependencies
-- [Gist2](https://github.com/nobnak/Gist2)
-
 ## Usage
+Add this git repo. and [Gist2](https://github.com/nobnak/Gist2) repo. from UPM.
+
 ```csharp
 public Texture tex;
 public List<List<Vector2>> routes;
