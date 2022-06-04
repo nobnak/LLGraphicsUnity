@@ -1,10 +1,9 @@
-using Gist2.Extensions.ComponentExt;
 using UnityEngine;
-using UnityEngine.Rendering;
+using Gist2.Extensions.ComponentExt;
 
 namespace LLGraphicsUnity {
 
-	public class GLMaterial : System.IDisposable {
+    public class GLMaterial : System.IDisposable {
 
         public const string LINE_SHADER = "LLG_TextureColored";
 
@@ -23,7 +22,7 @@ namespace LLGraphicsUnity {
 
 		#region interface
 
-		#region IDisposable implementation
+		#region IDisposable
 		public void Dispose() {
 			mat.Destroy();
 			mat = null;
@@ -35,13 +34,16 @@ namespace LLGraphicsUnity {
 			return this;
 		}
 		public GLProperty GetProperty() => new GLProperty(mat);
-		public GLPropertyScope GetScope() => new GLPropertyScope(this);
 		public GLPropertyScope GetScope(GLProperty next, int pass = 0) {
 			var scope = new GLPropertyScope(this);
-			LoadProperty(next);
+			if (next != null) LoadProperty(next);
 			SetPass(pass);
 			return scope;
 		}
+		public GLPropertyScope GetScope(GLProperty next, ShaderPass pass)
+			=> GetScope(next, (int)pass);
+		public GLPropertyScope GetScope(int pass = 0) => GetScope(null, pass);
+
 		public bool SetPass(int pass = 0) => mat.SetPass(pass);
 		#endregion
 

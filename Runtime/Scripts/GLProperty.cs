@@ -6,7 +6,6 @@ using UnityEngine.Rendering;
 namespace LLGraphicsUnity {
 
 	public class GLProperty {
-
 		public enum ZTestEnum {
 			NEVER = 1, LESS = 2, EQUAL = 3, LESSEQUAL = 4,
 			GREATER = 5, NOTEQUAL = 6, GREATEREQUAL = 7, ALWAYS = 8
@@ -38,6 +37,7 @@ namespace LLGraphicsUnity {
 		public static readonly int P_ZBIAS = Shader.PropertyToID("_ZBias");
 		public static readonly int P_CULL = Shader.PropertyToID("_Cull");
 		public static readonly int P_ColorMask = Shader.PropertyToID("_ColorMask");
+		public static readonly int P_Thickness = Shader.PropertyToID("_Thickness");
 
 		public Color Color = Color.white;
 		public Texture MainTex = null;
@@ -53,6 +53,8 @@ namespace LLGraphicsUnity {
 		public ColorMaskEnum ColorMask = ColorMaskEnum.ALL;
 
 		public KW_VERTEX_COLOR VertexColor = default;
+
+		public float LineThickness = 1f;
 
 		public GLProperty() { }
 		public GLProperty(GLProperty src) {
@@ -86,6 +88,8 @@ namespace LLGraphicsUnity {
 
 			dst.VertexColor = src.IsKeywordEnabled(KW_VERTEX_COLOR.NO_VERTEX_COLOR.ToString()) ? 
 				KW_VERTEX_COLOR.NO_VERTEX_COLOR : default;
+
+			dst.LineThickness = src.GetFloat(P_Thickness);
 		}
 		public static void Copy(GLProperty src, GLProperty dst) {
 			dst.Color = src.Color;
@@ -102,6 +106,8 @@ namespace LLGraphicsUnity {
 			dst.ColorMask = src.ColorMask;
 
 			dst.VertexColor = src.VertexColor;
+
+			dst.LineThickness = src.LineThickness;
 		}
 		public static void Copy(GLProperty src, Material dst) {
 			dst.color = src.Color;
@@ -119,6 +125,8 @@ namespace LLGraphicsUnity {
 
 			dst.shaderKeywords = null;
 			if (src.VertexColor != default) dst.EnableKeyword(src.VertexColor.ToString());
+
+			dst.SetFloat(P_Thickness, src.LineThickness);
 		}
 		#endregion
 	}

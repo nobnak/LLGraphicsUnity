@@ -16,6 +16,8 @@ Shader "LLG/TextureColored" {
 		_Cull("Cull", Int) = 0.0 // Off
 		_ZBias("ZBias", Float) = 0.0
 		_ColorMask("ColorMask", Int) = 0.0 // Off
+
+		_Thickness ("LineThickness", Float) = 1.0
 	}
 
 	SubShader{
@@ -31,52 +33,6 @@ Shader "LLG/TextureColored" {
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			ENDCG
-		}
-		Pass {
-			Blend[_SrcBlend][_DstBlend]
-			ZWrite[_ZWrite]
-			ZTest[_ZTest]
-			Offset[_ZBias],[_ZBias]
-			Cull[_Cull]
-			ColorMask[_ColorMask]
-
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			ENDCG
-		}
-	}
-
-		
-			CGINCLUDE
-			#pragma target 2.0
-			#pragma multi_compile ___ NO_VERTEX_COLOR
-			#include "UnityCG.cginc"
-
-			struct appdata_t {
-				float4 vertex : POSITION;
-				float4 color : COLOR;
-				float2 uv : TEXCOORD0;
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-			struct v2g {
-				float4 vertex : POSITION;
-				float4 color : COLOR;
-				float2 uv : TEXCOORD0;
-				float2 px : TEXCOORD1;
-				UNITY_VERTEX_INPUT_INSTANCE_ID
-			};
-			struct v2f {
-				float4 color : COLOR;
-				float2 uv : TEXCOORD0;
-				float4 vertex : SV_POSITION;
-				UNITY_VERTEX_OUTPUT_STEREO
-			};
-
-			float4 _Color;
-			sampler2D _MainTex;
-			float4 _MainTex_TexelSize;
 
 			v2f vert(appdata_t IN) {
 				float4 c = _Color;
@@ -96,7 +52,22 @@ Shader "LLG/TextureColored" {
 				o.uv = IN.uv;
 				return o;
 			}
-			v2g vert_px(appdata_t IN) {
+			ENDCG
+		}
+		Pass {
+			Blend[_SrcBlend][_DstBlend]
+			ZWrite[_ZWrite]
+			ZTest[_ZTest]
+			Offset[_ZBias],[_ZBias]
+			Cull[_Cull]
+			ColorMask[_ColorMask]
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma geometry geom
+			#pragma fragment frag
+
+			v2g vert(appdata_t IN) {
 				float4 c = _Color;
 
 				#ifndef NO_VERTEX_COLOR
@@ -118,11 +89,61 @@ Shader "LLG/TextureColored" {
 				o.px = px;
 				return o;
 			}
+			[maxvertexcount(4)]
+			void geom(line v2g IN[2], inout TriangleStream<v2f> OUT) {
+				float2 tan = normalize(IN[1].px - IN[0].px);
+				float2 nor = float2(-tan.y, tan.x);
 
-			[maxvertexcount(6)]
-			void geom_thick_line(line v2g IN, inout TriangleStream<v2f> OUT) {
+				v2f v;
+				for (int i = 0; i < 2; i++) {
+					v.color = IN[i].color;
+					v.uv = IN[i].uv;
 
+					float2 px = IN[i].px - (0.5 * _Thickness) * nor;
+					float2 vertex = (2 * px / _ScreenParams.xy - 1) * IN[i].vertex.w;
+					v.vertex = float4(vertex, IN[i].vertex.zw);
+					OUT.Append(v);
+
+					px = IN[i].px + (0.5 * _Thickness) * nor;
+					vertex = (2 * px / _ScreenParams.xy - 1) * IN[i].vertex.w;
+					v.vertex = float4(vertex, IN[i].vertex.zw);
+					OUT.Append(v);
+				}
 			}
+			ENDCG
+		}
+	}
+
+		
+			CGINCLUDE
+			#pragma target 4.0
+			#pragma multi_compile ___ NO_VERTEX_COLOR
+			#include "UnityCG.cginc"
+
+			struct appdata_t {
+				float4 vertex : POSITION;
+				float4 color : COLOR;
+				float2 uv : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+			};
+			struct v2g {
+				float4 vertex : POSITION;
+				float4 color : COLOR;
+				float2 uv : TEXCOORD0;
+				float2 px : TEXCOORD1;
+			};
+			struct v2f {
+				float4 color : COLOR;
+				float2 uv : TEXCOORD0;
+				float4 vertex : SV_POSITION;
+				UNITY_VERTEX_OUTPUT_STEREO
+			};
+
+			float4 _Color;
+			sampler2D _MainTex;
+			float4 _MainTex_TexelSize;
+
+			float _Thickness;
 
 			fixed4 frag(v2f IN) : SV_Target{
 				float4 cmain = tex2D(_MainTex, IN.uv);
