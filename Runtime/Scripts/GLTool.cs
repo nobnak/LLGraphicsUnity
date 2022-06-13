@@ -12,8 +12,7 @@ namespace LLGraphicsUnity {
 
 		public static void LineStrip(this IEnumerable<float3> vertices) {
 			GL.Begin(GL.LINE_STRIP);
-			foreach (var v in vertices)
-				GL.Vertex(v);
+			foreach (var v in vertices)	GL.Vertex(v);
 			GL.End();
 		}
 		public static void LineStrip(this IEnumerable<float2> vertices, float z = 0f)
@@ -22,6 +21,14 @@ namespace LLGraphicsUnity {
 			=> vertices.Cast<float3>().LineStrip();
 		public static void LineStrip(this IEnumerable<Vector2> vertices, float z = 0f)
 			=> vertices.Select(v => new float3(v, z)).LineStrip();
+
+		public static void TriangleStrip(this IEnumerable<float3> vertices) {
+			GL.Begin(GL.TRIANGLE_STRIP);
+			foreach (var v in vertices) GL.Vertex(v);
+			GL.End();
+		}
+		public static void TriangleStrip(this IEnumerable<float2> vertices, float z = 0f)
+			=> vertices.Select(v => new float3(v, z)).TriangleStrip();
 
 		public static Matrix4x4 SquareOrtho(float aspect, float height = 1f)
 			=> Matrix4x4.Ortho(0f, aspect * height, 0f, height, 1f, -100f);
