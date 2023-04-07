@@ -46,7 +46,7 @@ namespace LLGraphicsUnity {
 		public BlendMode DstBlend = BlendMode.OneMinusSrcAlpha;
 
 		public bool ZWriteMode = true;
-		public ZTestEnum ZTestMode = ZTestEnum.LESSEQUAL;
+		public CompareFunction ZTestMode = CompareFunction.LessEqual;
 		public float ZBias = 0f;
 
 		public CullEnum Cull = CullEnum.None;
@@ -80,7 +80,7 @@ namespace LLGraphicsUnity {
 			dst.DstBlend = (BlendMode)src.GetInt(P_DST_BLEND);
 
 			dst.ZWriteMode = src.GetInt(P_ZWRITE) == 1;
-			dst.ZTestMode = (GLProperty.ZTestEnum)src.GetInt(P_ZTEST);
+			dst.ZTestMode = (CompareFunction)src.GetInt(P_ZTEST);
 			dst.ZBias = src.GetFloat(P_ZBIAS);
 
 			dst.Cull = (CullEnum)src.GetInt(P_CULL);
