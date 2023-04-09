@@ -7,7 +7,8 @@
 
 [![Demo](http://img.youtube.com/vi/RjX-EDtGRns/hqdefault.jpg)](https://youtube.com/shorts/RjX-EDtGRns)
 
-## Usage
-Add this git repo. and [Gist2](https://github.com/nobnak/Gist2) repo. from UPM.
-
 See [an example](https://github.com/nobnak/Test-LLGraphicsUnity/blob/main/Assets/Scenes/ThickLine/ThickLine.cs)
+
+## Usage
+- Add new scope "jp.nobnak" in OpenUPM Scoped Registry at "https://package.openupm.com".
+- Install [Low Level Graphics](https://openupm.com/packages/jp.nobnak.llgraphics/) package on Package Manager
