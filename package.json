@@ -8,5 +8,8 @@
 			"description": "GL Sample",
 			"path": "Samples/GLSample01"
 		}
-	]
+	],
+	"dependencies": {
+		"com.nobnak.gist2": "1.0.0"
+	}
 }
