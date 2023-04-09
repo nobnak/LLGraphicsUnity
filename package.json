@@ -4,7 +4,7 @@
 		"email": "nobu.nakata@gmail.com"
 	},
 	"name": "jp.nobnak.llgraphics",
-	"displayName": "Low-level Graphicse",
+	"displayName": "Scoped low-level GL",
 	"version": "1.0.4",
 	"samples": [
 		{
