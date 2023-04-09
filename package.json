@@ -1,7 +1,7 @@
 {
 	"name": "jp.nobnak.llgraphics",
 	"displayName": "Low-level Graphicse",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"samples": [
 		{
 			"displayName": "GLSample01",
@@ -10,6 +10,7 @@
 		}
 	],
 	"dependencies": {
+		"com.unity.mathematics": "1.2.6",
 		"jp.nobnak.gist2": "1.0.1"
 	}
 }
