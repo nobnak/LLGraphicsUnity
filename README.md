@@ -1,7 +1,7 @@
 # GL Drawing Tool for Unity
 
-- Scoped
-- Draw thick lines
+- Scoped, Object-oriented low-level GL
+- Drawing lines with arbitrary line width
 
 ## Demo
 
